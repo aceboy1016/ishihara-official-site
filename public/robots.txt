@@ -1,0 +1,9 @@
+# *
+User-agent: *
+Allow: /
+
+# Host
+Host: https://ishihara-official.vercel.app
+
+# Sitemaps
+Sitemap: https://ishihara-official.vercel.app/sitemap.xml
