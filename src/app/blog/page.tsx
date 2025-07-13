@@ -6,10 +6,13 @@ import SearchBar from "@/components/SearchBar";
 export default async function BlogPage() {
   let posts: BlogPost[] = [];
   
-  try {
-    posts = await client.fetch(blogPostsQuery);
-  } catch (error) {
-    console.log("Sanity fetch error:", error);
+  // Sanity CMSが設定されていない場合はスキップ
+  if (process.env.NEXT_PUBLIC_SANITY_PROJECT_ID && process.env.NEXT_PUBLIC_SANITY_PROJECT_ID !== 'demo-project') {
+    try {
+      posts = await client.fetch(blogPostsQuery);
+    } catch (error) {
+      console.log("Sanity fetch error:", error);
+    }
   }
 
   return (

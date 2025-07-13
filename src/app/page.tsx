@@ -5,10 +5,13 @@ import { BlogPost } from "@/types/blog";
 export default async function Home() {
   let latestPosts: BlogPost[] = [];
   
-  try {
-    latestPosts = await client.fetch(blogPostsQuery + " [0...2]");
-  } catch (error) {
-    console.log("Sanity fetch error:", error);
+  // Sanity CMSが設定されていない場合はスキップ
+  if (process.env.NEXT_PUBLIC_SANITY_PROJECT_ID && process.env.NEXT_PUBLIC_SANITY_PROJECT_ID !== 'demo-project') {
+    try {
+      latestPosts = await client.fetch(blogPostsQuery + " [0...2]");
+    } catch (error) {
+      console.log("Sanity fetch error:", error);
+    }
   }
 
   return (
