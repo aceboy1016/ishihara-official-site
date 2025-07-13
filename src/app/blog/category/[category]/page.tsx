@@ -9,6 +9,10 @@ interface CategoryPageProps {
   }>;
 }
 
+export async function generateStaticParams() {
+  return []
+}
+
 export default async function CategoryPage({ params }: CategoryPageProps) {
   const { category: categorySlug } = await params;
   let posts: BlogPost[] = [];

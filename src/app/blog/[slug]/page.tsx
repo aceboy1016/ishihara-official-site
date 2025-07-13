@@ -10,6 +10,10 @@ interface BlogPostPageProps {
   }>;
 }
 
+export async function generateStaticParams() {
+  return []
+}
+
 export default async function BlogPostPage({ params }: BlogPostPageProps) {
   const { slug } = await params;
   let post: BlogPost | null = null;

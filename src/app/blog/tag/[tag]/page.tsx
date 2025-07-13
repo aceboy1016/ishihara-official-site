@@ -9,6 +9,10 @@ interface TagPageProps {
   }>;
 }
 
+export async function generateStaticParams() {
+  return []
+}
+
 export default async function TagPage({ params }: TagPageProps) {
   const { tag: tagSlug } = await params;
   let posts: BlogPost[] = [];
