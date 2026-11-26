@@ -1,97 +1,109 @@
 'use client'
 
 import Link from 'next/link'
-import { useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
+import gsap from 'gsap'
+
+const nav = [
+  { name: 'About', href: '/#about' },
+  { name: 'Works', href: '/#works' },
+  { name: 'Products', href: '/#products' },
+  { name: 'Approach', href: '/#approach' },
+  { name: 'Trainer', href: '/#trainer' },
+  { name: 'Contact', href: '/#contact' },
+]
 
 export default function Header() {
-  const [isMenuOpen, setIsMenuOpen] = useState(false)
+  const [open, setOpen] = useState(false)
+  const [hidden, setHidden] = useState(false)
+  const overlay = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    let last = window.scrollY
+    const onScroll = () => {
+      const y = window.scrollY
+      setHidden(y > 160 && y > last)
+      last = y
+    }
+    window.addEventListener('scroll', onScroll, { passive: true })
+    return () => window.removeEventListener('scroll', onScroll)
+  }, [])
+
+  useEffect(() => {
+    const el = overlay.current
+    if (!el) return
+    const lenis = (window as Window & { __lenis?: { stop: () => void; start: () => void } }).__lenis
+    if (open) {
+      lenis?.stop()
+      gsap.set(el, { visibility: 'visible' })
+      gsap.fromTo(el, { clipPath: 'inset(0% 0% 100% 0%)' }, { clipPath: 'inset(0% 0% 0% 0%)', duration: 1, ease: 'expo.inOut' })
+      gsap.fromTo(el.querySelectorAll('[data-menu-item]'), { yPercent: 110 }, { yPercent: 0, duration: 1.2, ease: 'expo.out', stagger: 0.05, delay: 0.35 })
+    } else {
+      lenis?.start()
+      gsap.to(el, { clipPath: 'inset(0% 0% 100% 0%)', duration: 0.8, ease: 'expo.inOut', onComplete: () => void gsap.set(el, { visibility: 'hidden' }) })
+    }
+  }, [open])
 
   return (
-    <header className="bg-white shadow-sm border-b">
-      <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between items-center h-16">
-          <div className="flex-shrink-0">
-            <Link href="/" className="text-2xl font-bold text-gray-900">
-              イシハラ
+    <>
+      <header className={`fixed inset-x-0 top-0 z-[100] text-deep transition-transform duration-700 ease-[cubic-bezier(.16,1,.3,1)] ${hidden && !open ? '-translate-y-full' : ''}`}>
+        <nav className="flex items-center justify-between px-5 md:px-10 h-20 md:h-24">
+          <Link href="/" className="flex items-baseline gap-3 leading-none" aria-label="石原淳哉 ホーム">
+            <span className="font-outfit font-black text-[15px] md:text-base tracking-[-0.02em] uppercase">Junya Ishihara</span>
+            <span className="hidden sm:inline font-mono text-[10px] tracking-[0.1em] text-breeze-600">Trainer × AI</span>
+          </Link>
+          <ul className="hidden lg:flex items-center gap-9">
+            {nav.slice(0, 5).map((n) => (
+              <li key={n.name}>
+                <Link href={n.href} className="nav-link inline-flex font-outfit text-[11px] font-semibold tracking-[0.22em] uppercase">
+                  <span data-text={n.name}>{n.name}</span>
+                </Link>
+              </li>
+            ))}
+          </ul>
+          <div className="flex items-center gap-6">
+            <Link href="/#contact" className="hidden md:inline-flex nav-link font-outfit text-[11px] font-semibold tracking-[0.22em] uppercase">
+              <span data-text="Contact">Contact</span>
+              <span className="ml-2" aria-hidden>↗</span>
             </Link>
-          </div>
-          
-          <div className="hidden md:block">
-            <div className="ml-10 flex items-baseline space-x-4">
-              <Link
-                href="/"
-                className="text-gray-900 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium transition-colors"
-              >
-                ホーム
-              </Link>
-              <Link
-                href="/blog"
-                className="text-gray-900 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium transition-colors"
-              >
-                ブログ
-              </Link>
-              <Link
-                href="/profile"
-                className="text-gray-900 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium transition-colors"
-              >
-                プロフィール
-              </Link>
-              <Link
-                href="/contact"
-                className="text-gray-900 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium transition-colors"
-              >
-                お問い合わせ
-              </Link>
-            </div>
-          </div>
-
-          <div className="md:hidden">
             <button
-              onClick={() => setIsMenuOpen(!isMenuOpen)}
-              className="text-gray-900 hover:text-blue-600 focus:outline-none focus:text-blue-600"
+              type="button"
+              onClick={() => setOpen((v) => !v)}
+              className="lg:hidden flex items-center gap-3 font-outfit text-[11px] font-semibold tracking-[0.22em] uppercase h-10"
+              aria-expanded={open}
+              aria-controls="site-menu"
             >
-              <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                {isMenuOpen ? (
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                ) : (
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
-                )}
-              </svg>
+              {open ? 'Close' : 'Menu'}
+              <span className="relative block w-6 h-[7px]" aria-hidden>
+                <span className={`absolute left-0 right-0 h-px bg-current transition-transform duration-500 ${open ? 'top-[3px] rotate-45' : 'top-0'}`} />
+                <span className={`absolute left-0 right-0 h-px bg-current transition-transform duration-500 ${open ? 'top-[3px] -rotate-45' : 'top-[6px]'}`} />
+              </span>
             </button>
           </div>
-        </div>
+        </nav>
+      </header>
 
-        {isMenuOpen && (
-          <div className="md:hidden">
-            <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
-              <Link
-                href="/"
-                className="text-gray-900 hover:text-blue-600 block px-3 py-2 rounded-md text-base font-medium"
-              >
-                ホーム
+      <div
+        ref={overlay}
+        id="site-menu"
+        aria-hidden={!open}
+        className="fixed inset-0 z-[90] bg-breeze-50 text-deep invisible flex flex-col justify-between pt-28 pb-10 px-5 md:px-10"
+        style={{ clipPath: 'inset(0% 0% 100% 0%)' }}
+      >
+        <ul className="space-y-1">
+          {nav.map((n, i) => (
+            <li key={n.name} className="overflow-hidden">
+              <Link href={n.href} onClick={() => setOpen(false)} data-menu-item tabIndex={open ? 0 : -1} className="group flex items-baseline gap-4 py-1">
+                <span className="font-mono text-[10px] text-breeze-500 w-6">0{i + 1}</span>
+                <span className="font-outfit font-bold uppercase tracking-[-0.04em] text-[clamp(2.4rem,11vw,6rem)] leading-[0.95] group-hover:text-breeze-500 transition-colors duration-500">
+                  {n.name}
+                </span>
               </Link>
-              <Link
-                href="/blog"
-                className="text-gray-900 hover:text-blue-600 block px-3 py-2 rounded-md text-base font-medium"
-              >
-                ブログ
-              </Link>
-              <Link
-                href="/profile"
-                className="text-gray-900 hover:text-blue-600 block px-3 py-2 rounded-md text-base font-medium"
-              >
-                プロフィール
-              </Link>
-              <Link
-                href="/contact"
-                className="text-gray-900 hover:text-blue-600 block px-3 py-2 rounded-md text-base font-medium"
-              >
-                お問い合わせ
-              </Link>
-            </div>
-          </div>
-        )}
-      </nav>
-    </header>
+            </li>
+          ))}
+        </ul>
+        <p className="text-xs text-zinc-500 border-t border-deep/10 pt-6">トレーニングの現場から、AIで「続けたくなる」をつくる。</p>
+      </div>
+    </>
   )
 }

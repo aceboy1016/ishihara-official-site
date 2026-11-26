@@ -1,49 +1,61 @@
-import type { Metadata } from "next";
-import { Noto_Sans_JP } from "next/font/google";
-import "./globals.css";
-import Header from "@/components/Header";
-import Footer from "@/components/Footer";
-import GoogleAnalytics from "@/components/GoogleAnalytics";
-import { generateMetadata as generateSEOMetadata } from "@/lib/metadata";
-import { generateWebsiteStructuredData } from "@/lib/structured-data";
+import type { Metadata, Viewport } from 'next'
+import { Inter, Outfit, JetBrains_Mono } from 'next/font/google'
+import './globals.css'
+import Cursor from '@/components/motion/Cursor'
+import { site } from '@/config'
 
-const notoSansJP = Noto_Sans_JP({
-  subsets: ["latin"],
-  display: "swap",
-});
+const inter = Inter({ subsets: ['latin'], display: 'swap', variable: '--font-inter' })
+const outfit = Outfit({ subsets: ['latin'], display: 'swap', variable: '--font-outfit' })
+const mono = JetBrains_Mono({ subsets: ['latin'], display: 'swap', variable: '--font-mono' })
 
-export const metadata: Metadata = generateSEOMetadata({
-  title: "イシハラ公式サイト",
-  description: "イシハラの公式サイト兼ブログ。ビジネス・投資・ライフスタイルについて発信しています。"
-});
+const description =
+  'パーソナルトレーナー石原淳哉の公式サイト。トレーニングの現場から、AIで「続けたくなる」をつくる。音声でカルテを自動作成するAI「VOICEカルテ」を開発中（試験運用中）。'
 
-export default function RootLayout({
-  children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
-  const websiteStructuredData = generateWebsiteStructuredData();
+export const metadata: Metadata = {
+  metadataBase: new URL(site.url),
+  title: { default: '石原淳哉 | Trainer × AI', template: '%s | 石原淳哉' },
+  description,
+  alternates: { canonical: '/' },
+  openGraph: {
+    type: 'website',
+    locale: 'ja_JP',
+    siteName: '石原淳哉 Official',
+    title: '石原淳哉 | Trainer × AI',
+    description,
+    images: [{ url: '/junya-portrait.jpg', alt: '石原淳哉' }],
+  },
+  twitter: { card: 'summary_large_image', title: '石原淳哉 | Trainer × AI', description, images: ['/junya-portrait.jpg'] },
+}
 
+export const viewport: Viewport = { width: 'device-width', initialScale: 1, themeColor: '#F5F9FC' }
+
+const personLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Person',
+  name: '石原 淳哉',
+  alternateName: 'Junya Ishihara',
+  url: site.url,
+  image: `${site.url}/junya-portrait.jpg`,
+  jobTitle: 'パーソナルトレーナー / 開発',
+  sameAs: [site.trainerSite],
+}
+
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="ja">
+    <html lang="ja" suppressHydrationWarning className={`${inter.variable} ${outfit.variable} ${mono.variable}`}>
       <head>
+        {/* 描画前に実行：アニメーション対象のチラつき防止 */}
         <script
-          type="application/ld+json"
           dangerouslySetInnerHTML={{
-            __html: JSON.stringify(websiteStructuredData),
+            __html: `(function(){var d=document.documentElement;d.classList.add('js');if(window.matchMedia('(prefers-reduced-motion: reduce)').matches)d.classList.add('motion-off')})()`,
           }}
         />
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(personLd).replace(/</g, '\\u003c') }} />
       </head>
-      <body className={`${notoSansJP.className} antialiased`}>
-        <GoogleAnalytics />
-        <div className="min-h-screen flex flex-col">
-          <Header />
-          <main className="flex-grow">
-            {children}
-          </main>
-          <Footer />
-        </div>
+      <body className="font-sans antialiased">
+        <Cursor />
+        {children}
       </body>
     </html>
-  );
+  )
 }
