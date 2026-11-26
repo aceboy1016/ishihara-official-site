@@ -4,7 +4,7 @@ import { useEffect, useRef } from 'react'
 import gsap from 'gsap'
 
 /**
- * 「話す → 下書き → 確認して保存」を見せるイメージ図（実際の画面ではない）。
+ * 「話す → AIがカルテを自動作成 → 確認して保存」を見せるイメージ図（実際の画面ではない）。
  * 内容は架空の例。動きを減らす設定では最後の状態をそのまま表示する。
  */
 const SPOKEN = '前回と同じで、ベンチだけ60キロ。右の股関節に詰まりがあったので深さを変えた。次回は股関節を確認。'
@@ -58,7 +58,7 @@ export default function VoiceDemo() {
           ease: 'none',
           onUpdate: () => { text.textContent = SPOKEN.slice(0, Math.round(typed.n)) },
         })
-        .call(() => { wave.pause(); gsap.to(bars, { scaleY: 0.15, duration: 0.4 }); status.textContent = '下書きを作成' })
+        .call(() => { wave.pause(); gsap.to(bars, { scaleY: 0.15, duration: 0.4 }); status.textContent = 'AIがカルテを作成' })
         .to(rows, { autoAlpha: 1, y: 0, duration: 0.7, stagger: 0.25, ease: 'expo.out' }, '+=0.3')
         .call(() => { status.textContent = 'トレーナーが確認' }, [], '+=0.6')
         .to(save, { backgroundColor: '#4A98D0', color: '#fff', duration: 0.4 }, '+=0.8')
@@ -70,7 +70,7 @@ export default function VoiceDemo() {
   }, [])
 
   return (
-    <div ref={root} className="relative w-full max-w-[440px] rounded-2xl bg-white/80 backdrop-blur-md ring-1 ring-breeze-200 shadow-[0_30px_80px_-30px_rgba(47,125,182,0.35)] p-5 md:p-6" aria-label="VOICEカルテの使い方のイメージ（架空の例）" role="img">
+    <div ref={root} className="relative w-full max-w-[440px] rounded-2xl bg-white/80 backdrop-blur-md ring-1 ring-breeze-200 shadow-[0_30px_80px_-30px_rgba(47,125,182,0.35)] p-5 md:p-6" aria-label="VOICEカルテのイメージ：話した内容からAIがカルテを自動作成（架空の例）" role="img">
       <div className="flex items-center justify-between font-mono text-[10px] tracking-[0.08em] text-zinc-500">
         <span className="flex items-center gap-2">
           <span className="relative flex w-2 h-2">
@@ -108,7 +108,7 @@ export default function VoiceDemo() {
       </ul>
 
       <div className="mt-4 flex items-center justify-between gap-4">
-        <span className="font-mono text-[10px] text-zinc-400">AIは下書きまで。保存は人が確認して。</span>
+        <span className="font-mono text-[10px] text-zinc-400">AIが自動作成 → 確認して保存</span>
         <span data-demo="save" className="shrink-0 rounded-full ring-1 ring-breeze-400 px-4 h-8 inline-flex items-center text-[11px] font-bold bg-breeze-500 text-white">
           確認して保存
         </span>

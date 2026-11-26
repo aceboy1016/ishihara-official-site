@@ -9,7 +9,7 @@ const outfit = Outfit({ subsets: ['latin'], display: 'swap', variable: '--font-o
 const mono = JetBrains_Mono({ subsets: ['latin'], display: 'swap', variable: '--font-mono' })
 
 const description =
-  'パーソナルトレーナー石原淳哉の公式サイト。トレーニングの現場から、AIで「続けたくなる」をつくる。トレーナー向け記録サービス「VOICEカルテ」の開発を担当（試験運用中）。'
+  'パーソナルトレーナー石原淳哉の公式サイト。トレーニングの現場から、AIで「続けたくなる」をつくる。音声でカルテを自動作成するAI「VOICEカルテ」を開発中（試験運用中）。'
 
 export const metadata: Metadata = {
   metadataBase: new URL(site.url),

@@ -11,22 +11,22 @@ import { site } from '@/config'
    ────────────────────────────────────────── */
 
 const karteFeatures = [
-  { k: 'Voice to Draft', t: '話して、記録の下書き', d: 'セッションの内容を声やまとめての入力で伝えると、種目・重量・回数・体調・申し送りの下書きができます。' },
+  { k: 'Voice to Karte', t: '話すだけで、カルテが完成', d: 'セッションの内容を声で伝えるだけ。AIが種目・重量・回数・体調・申し送りを整理し、カルテを自動で作成します。' },
   { k: 'Hand-over', t: '担当が変わっても、つながる', d: '前回の状態・実施内容・注意点を残し、次の指導や担当者間の引き継ぎに活かします。' },
   { k: 'Body Map', t: '身体の状態を、図で残す', d: '骨格図の前面・背面に、気になる部位を記録。言葉だけでは伝わりにくい状態を共有できます。' },
   { k: 'Progress', t: '変化を、見返せる', d: '体重や種目ごとの使用重量の推移を確認し、次の指導に役立てます。' },
 ]
 
 const flow = [
-  { n: '01', t: '話す', d: 'セッション中・直後に、声やまとめて入力。' },
-  { n: '02', t: '下書き', d: '種目や申し送りに整理された下書きができる。' },
-  { n: '03', t: '確認', d: 'トレーナーが内容を見て、必要なら直す。' },
+  { n: '01', t: '話す', d: 'セッション中・直後に、声で伝えるだけ。' },
+  { n: '02', t: 'AIが自動作成', d: '種目・重量・回数・申し送りまで、AIがカルテにまとめる。' },
+  { n: '03', t: '確認', d: 'トレーナーが内容を見て、必要ならひと言で直す。' },
   { n: '04', t: '保存・共有', d: '確定した記録を、次の指導と引き継ぎに。' },
 ]
 
 const approach = [
   { n: '01', t: '現場で使えること', d: '入力が速い、操作が少ない、スマホで使いやすい、現場を止めない。トレーナーとして毎日使う目線で作ります。' },
-  { n: '02', t: '判断するのは人', d: 'AIは下書きや提案まで。正式な記録や指導の判断は、トレーナーが確認して決めます。' },
+  { n: '02', t: '面倒はAIに、判断は人に', d: '記録のような手間のかかる作業はAIに任せ、トレーナーはお客様と向き合う時間と指導の判断に集中する。そのための道具をつくります。' },
   { n: '03', t: '小さく試して、直す', d: 'まずは試験運用で現場に置き、使ってもらいながら改善を重ねます。' },
 ]
 
@@ -140,10 +140,10 @@ export default function Home() {
               <h2 data-split className="mt-8 font-outfit font-bold tracking-[-0.045em] leading-[0.9] text-[clamp(3.5rem,10vw,9rem)]">
                 VOICE<span className="text-breeze-500">カルテ</span>
               </h2>
-              <p data-reveal className="mt-8 palt text-xl md:text-3xl font-bold leading-[1.5]">トレーニングを、もっと価値ある体験に。</p>
+              <p data-reveal className="mt-8 palt text-xl md:text-3xl font-bold leading-[1.5]">話すだけで、カルテができる。<span className="block text-base md:text-xl font-medium text-zinc-500 mt-2">トレーニングを、もっと価値ある体験に。</span></p>
             </div>
             <p data-reveal className="col-span-12 lg:col-span-4 text-base md:text-lg leading-[1.9] text-zinc-600">
-              トレーナー・ジムが、お客様の状態と指導内容を記録し、次の指導や担当者間の引き継ぎに活かすためのWebサービスです。現在は試験運用をしながら改善を進めています。
+              セッション中の声から、AIがカルテを自動で作成するトレーナー・ジム向けのサービスです。記録した状態と指導内容を、次の指導や担当者間の引き継ぎに活かせます。現在は試験運用をしながら改善を進めています。
             </p>
           </div>
 
@@ -171,9 +171,9 @@ export default function Home() {
 
           <div data-reveal className="mt-16 md:mt-20 rounded-md bg-white p-7 md:p-10 grid grid-cols-12 gap-6 items-center ring-1 ring-breeze-200">
             <div className="col-span-12 md:col-span-8">
-              <p className="font-mono text-[11px] text-breeze-600">AI × Human</p>
+              <p className="font-mono text-[11px] text-breeze-600">AI × Trainer</p>
               <p className="mt-3 text-lg md:text-xl font-bold leading-[1.7]">
-                AIが前回の記録を参考に下書きをつくる機能も、試験中です。正式な記録は、必ずトレーナーが確認してから保存します。
+                AIが前回の記録も参考にしながら、カルテを自動で作成。トレーナーは内容を確認して保存するだけ。書く時間を、お客様と向き合う時間に。
               </p>
             </div>
             <div className="col-span-12 md:col-span-4 flex flex-wrap gap-3 md:justify-end">
