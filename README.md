@@ -33,4 +33,4 @@ Node.js 22 以上（`.nvmrc`）。
 
 | 変数 | 用途 |
 | --- | --- |
-| `NEXT_PUBLIC_SITE_URL` | 正式URL（未設定時は `https://ishihara-official.vercel.app`） |
+| `NEXT_PUBLIC_SITE_URL` | 正式URL（未設定時は `https://ishihara-official-site.vercel.app`） |
