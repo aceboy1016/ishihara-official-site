@@ -6,6 +6,7 @@ import gsap from 'gsap'
 
 const nav = [
   { name: 'About', href: '/#about' },
+  { name: 'Works', href: '/#works' },
   { name: 'Products', href: '/#products' },
   { name: 'Approach', href: '/#approach' },
   { name: 'Trainer', href: '/#trainer' },
@@ -52,7 +53,7 @@ export default function Header() {
             <span className="hidden sm:inline font-mono text-[10px] tracking-[0.1em] text-breeze-600">Trainer × AI</span>
           </Link>
           <ul className="hidden lg:flex items-center gap-9">
-            {nav.slice(0, 4).map((n) => (
+            {nav.slice(0, 5).map((n) => (
               <li key={n.name}>
                 <Link href={n.href} className="nav-link inline-flex font-outfit text-[11px] font-semibold tracking-[0.22em] uppercase">
                   <span data-text={n.name}>{n.name}</span>

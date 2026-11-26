@@ -24,6 +24,13 @@ const flow = [
   { n: '04', t: '保存・共有', d: '確定した記録を、次の指導と引き継ぎに。' },
 ]
 
+const roles = [
+  { k: 'Personal Trainer', t: 'パーソナルトレーナー', d: 'HALLEL 半蔵門・恵比寿で、コンディショニングを軸に一般の方からアスリートまで指導。指導歴10年以上。', href: site.trainerSite, cta: 'Training Site', external: true },
+  { k: 'Strength Coach', t: 'ストレングスコーチ', d: '湘南学院高等学校 男子バレーボール部に、ストレングストレーナーとして帯同。', href: '', cta: '', external: false },
+  { k: 'AI Product', t: 'AIサービスの開発', d: '音声でカルテを自動作成するAI「VOICEカルテ」を開発中（試験運用中）。', href: '#products', cta: 'Products', external: false },
+  { k: 'Writer', t: '情報発信', d: 'トレーニング・栄養・ライフスタイルについて、現場の知見をブログで発信。', href: `${site.trainerSite}/blog`, cta: 'Journal', external: true },
+]
+
 const approach = [
   { n: '01', t: '現場で使えること', d: '入力が速い、操作が少ない、スマホで使いやすい、現場を止めない。トレーナーとして毎日使う目線で作ります。' },
   { n: '02', t: '面倒はAIに、判断は人に', d: '記録のような手間のかかる作業はAIに任せ、トレーナーはお客様と向き合う時間と指導の判断に集中する。そのための道具をつくります。' },
@@ -78,17 +85,17 @@ export default function Home() {
           </div>
           <div data-hero="fade" className="relative grid grid-cols-2 md:grid-cols-4 border-t border-deep/10 font-mono text-[11px] text-zinc-500">
             {[
-              { k: '10+', v: 'years coaching' },
-              { k: '3,000+', v: 'sessions' },
-              { k: 'NASM-PES', v: 'certified' },
+              { k: 'Trainer', v: 'HALLEL 半蔵門・恵比寿' },
+              { k: 'Coach', v: '高校バレーボール部' },
+              { k: 'AI Product', v: 'VOICEカルテ' },
             ].map((s) => (
               <div key={s.v} className="px-5 md:px-10 py-5 border-r border-deep/10 flex items-baseline gap-3">
-                <span className="font-outfit text-deep text-base md:text-lg font-semibold">{s.k}</span>
+                <span className="font-outfit text-deep text-sm md:text-base font-semibold">{s.k}</span>
                 <span>{s.v}</span>
               </div>
             ))}
             <div className="px-5 md:px-10 py-5 flex items-center justify-between">
-              <span>Hanzomon / Ebisu, Tokyo</span>
+              <span>Writer — Journal</span>
               <span className="scroll-cue" aria-hidden />
             </div>
           </div>
@@ -123,6 +130,58 @@ export default function Home() {
               </p>
             </div>
           </div>
+        </section>
+
+        {/* ─── What I Do ─── */}
+        <section id="works" className="px-5 md:px-10 pb-28 md:pb-44">
+          <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-6 border-t border-deep/10 pt-16 md:pt-24">
+            <div>
+              <p className="font-mono text-[11px] text-breeze-600">What I Do</p>
+              <h2 data-split className="mt-6 font-bold tracking-[-0.03em] leading-[1.2] text-[clamp(2rem,4.5vw,3.75rem)]">
+                鍛える、支える、
+                <br />
+                つくる、伝える。
+              </h2>
+            </div>
+            <p data-reveal className="max-w-md text-base leading-[1.9] text-zinc-600">
+              4つの顔を持つトレーナーです。すべての軸にあるのは、トレーニングの現場で得た経験です。
+            </p>
+          </div>
+          <ul data-stagger className="mt-12 md:mt-16 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            {roles.map((r, i) => {
+              const highlight = r.k === 'AI Product'
+              const body = (
+                <>
+                  <div className="flex items-center justify-between font-mono text-[11px]">
+                    <span className={highlight ? 'text-white/85' : 'text-breeze-600'}>{r.k}</span>
+                    <span className={highlight ? 'text-white/60' : 'text-zinc-400'}>0{i + 1}</span>
+                  </div>
+                  <p className="mt-10 text-xl xl:text-2xl font-bold palt">{r.t}</p>
+                  <p className={`mt-3 text-sm leading-[1.85] ${highlight ? 'text-white/85' : 'text-zinc-600'}`}>{r.d}</p>
+                  {r.href && (
+                    <span className={`mt-auto pt-8 inline-flex items-center gap-2 font-outfit text-[11px] font-semibold tracking-[0.2em] uppercase ${highlight ? 'text-white' : 'text-deep/70 group-hover:text-breeze-600'} transition-colors duration-500`}>
+                      {r.cta}
+                      <span aria-hidden className="transition-transform duration-500 group-hover:translate-x-1">{r.external ? '↗' : '→'}</span>
+                    </span>
+                  )}
+                </>
+              )
+              const box = `group h-full sm:min-h-[17rem] flex flex-col rounded-md p-7 transition-colors duration-700 ${
+                highlight ? 'bg-breeze-500 text-white hover:bg-breeze-600' : 'bg-breeze-50 ring-1 ring-breeze-200 hover:ring-breeze-400'
+              }`
+              return (
+                <li key={r.k}>
+                  {r.href ? (
+                    <a href={r.href} className={box}>
+                      {body}
+                    </a>
+                  ) : (
+                    <div className={box}>{body}</div>
+                  )}
+                </li>
+              )
+            })}
+          </ul>
         </section>
 
         {/* ─── Products ─── */}
